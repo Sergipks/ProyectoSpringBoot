@@ -1,4 +1,4 @@
-package com.joverpenalva.proyectospringboot.models;
+package com.joverpenalva.proyectospringboot.models.entities;
 
 import java.math.BigDecimal;
 import java.util.Date;
