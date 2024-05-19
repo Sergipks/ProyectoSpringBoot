@@ -1,8 +1,11 @@
 package com.joverpenalva.proyectospringboot.controllers;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,15 +23,20 @@ import com.joverpenalva.proyectospringboot.models.services.ITrabajoService;
 
 @CrossOrigin(origins = {"*"})
 @RestController
-@RequestMapping("/trabajos")
+@RequestMapping(value = "/trabajos", produces = "application/json;charset=UTF-8")
 public class TrabajoRestController {
 	
 	@Autowired
 	private ITrabajoService trabajoService;
 	
 	@GetMapping
-	public List<Trabajo> index(){
-		return trabajoService.findAll();
+	public ResponseEntity<Object> index() {
+	    List<Trabajo> trabajos = trabajoService.findAll();
+	    Map<String, Object> responseBody = new HashMap<>();
+	    responseBody.put("status", HttpStatus.OK.value());
+	    responseBody.put("message", "Success");
+	    responseBody.put("result", trabajos);
+	    return ResponseEntity.ok(responseBody);
 	}
 	
 	@PostMapping
