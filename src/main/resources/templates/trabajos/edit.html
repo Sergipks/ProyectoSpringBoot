@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Editar Trabajo</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-4">Editar Trabajo</h1>
+        <form th:action="@{/view/trabajos/edit/{id}(id=${trabajo.codTrabajo})}" th:object="${trabajo}" method="post">
+        	<div class="form-group">
+		        <label for="codTrabajo">Código Trabajo:</label>
+		    	<input type="text" class="form-control" id="codTrabajo" th:field="*{codTrabajo}" readonly/>
+	    	</div>
+            <div class="form-group">
+                <label for="descripcion">Descripción:</label>
+                <input type="text" id="descripcion" class="form-control" th:field="*{descripcion}" required/>
+            </div>
+            <div class="form-group">
+                <label for="categoria">Categoría:</label>
+                <input type="text" id="categoria" class="form-control" th:field="*{categoria}" readonly/>
+            </div>
+            <div class="form-group">
+                <label for="fechaInicio">Fecha de Inicio:</label>
+                <input type="date" id="fechaInicio" class="form-control" th:field="*{fechaInicio}" readonly/>
+            </div>
+            <div class="form-group">
+                <label for="fechaFin">Fecha de Fin:</label>
+                <input type="date" id="fechaFin" class="form-control" th:field="*{fechaFin}"/>
+            </div>
+            <div class="form-group">
+                <label for="tiempo">Tiempo:</label>
+                <input type="number" id="tiempo" class="form-control" th:field="*{tiempo}"/>
+            </div>
+            <div class="form-group">
+                <label for="prioridad">Prioridad:</label>
+                <input type="number" id="prioridad" class="form-control" th:field="*{prioridad}" required/>
+            </div>
+            <button type="submit" class="btn btn-primary">Actualizar</button>
+        </form>
+        <a href="/view/trabajos" class="btn btn-secondary mt-3">Volver a la lista</a>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
