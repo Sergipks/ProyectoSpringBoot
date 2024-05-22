@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Lista de Trabajos</title>
+    <meta charset="UTF-8">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="text-center">Lista de Trabajos</h1>
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Descripción</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="trabajo : ${trabajos}">
+                    <td th:text="${trabajo.codTrabajo}">1</td>
+                    <td th:text="${trabajo.descripcion}">Descripción del trabajo</td>
+                    <td>
+                        <a class="btn btn-primary" th:href="@{/view/trabajos/edit/{id}(id=${trabajo.codTrabajo})}">Editar</a>
+                        <a class="btn btn-danger" th:href="@{/view/trabajos/delete/{id}(id=${trabajo.codTrabajo})}">Eliminar</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <a class="btn btn-success" href="/view/trabajos/create">Crear Nuevo Trabajo</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Trabajo</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h2 class="mt-4">Crear Trabajo</h2>
+        <form action="#" th:action="@{/view/trabajos/create}" th:object="${trabajo}" method="post">
+        	<div class="form-group">
+		        <label for="codTrabajo">Código Trabajo:</label>
+		    	<input type="text" class="form-control" id="codTrabajo" th:field="*{codTrabajo}" required/>
+	    	</div>
+            <div class="form-group">
+                <label for="categoria">Categoría:</label>
+                <select id="categoria" name="categoria" class="form-control" th:field="*{categoria}" required>
+                    <option value="Limpieza">Limpieza</option>
+                    <option value="Carpintería">Carpintería</option>
+                    <option value="Electricidad">Electricidad</option>
+                    <option value="Fontanería">Fontanería</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="descripcion">Descripción:</label>
+                <textarea id="descripcion" name="descripcion" class="form-control" th:field="*{descripcion}" required></textarea>
+            </div>
+            <div class="form-group">
+	            <label for="idTrabajador">Trabajador:</label>
+			    <select id="idTrabajador" name="trabajador" class="form-control" th:field="*{idTrabajador}">
+			        <option th:each="trabajador : ${trabajadores}" 
+			        		th:value="${trabajador.idTrabajador}" 
+			        		th:text="${trabajador.nombre + ' (' + trabajador.especialidad + ')'}"></option>
+			    </select>
+            </div>
+            <div class="form-group">
+                <label for="prioridad">Prioridad:</label>
+                <input type="number" id="prioridad" name="prioridad" class="form-control" th:field="*{prioridad}" required/>
+            </div>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+        </form>
+        <a href="/view/trabajos" class="btn btn-secondary mt-3">Volver a la lista</a>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

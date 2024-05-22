@@ -23,87 +23,135 @@ import com.joverpenalva.proyectospringboot.models.services.ITrabajoService;
 
 @CrossOrigin(origins = {"*"})
 @RestController
-@RequestMapping(value = "/trabajos", produces = "application/json;charset=UTF-8")
+@RequestMapping(value = "api/trabajos", produces = "application/json;charset=UTF-8")
 public class TrabajoRestController {
-	
-	@Autowired
-	private ITrabajoService trabajoService;
-	
-	@GetMapping
-	public ResponseEntity<Object> index() {
-	    List<Trabajo> trabajos = trabajoService.findAll();
-	    Map<String, Object> responseBody = new HashMap<>();
-	    responseBody.put("status", HttpStatus.OK.value());
-	    responseBody.put("message", "Success");
-	    responseBody.put("result", trabajos);
-	    return ResponseEntity.ok(responseBody);
-	}
-	
-	@PostMapping
-    public Trabajo create(@RequestBody Trabajo trabajo) {
-        return trabajoService.save(trabajo);
+    
+    @Autowired
+    private ITrabajoService trabajoService;
+    
+    @GetMapping
+    public ResponseEntity<Object> getTrabajos() {
+        List<Trabajo> trabajos = trabajoService.findAll();
+        Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put("status", HttpStatus.OK.value());
+        responseBody.put("message", "Success");
+        responseBody.put("result", trabajos);
+        return ResponseEntity.ok(responseBody);
+    }
+    
+    @PostMapping
+    public ResponseEntity<Object> create(@RequestBody Trabajo trabajo) {
+        Trabajo createdTrabajo = trabajoService.save(trabajo);
+        Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put("status", HttpStatus.CREATED.value());
+        responseBody.put("message", "Trabajo creado exitosamente");
+        responseBody.put("result", createdTrabajo);
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseBody);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Trabajo> update(@PathVariable String id, @RequestBody Trabajo trabajo) {
+    public ResponseEntity<Object> update(@PathVariable String id, @RequestBody Trabajo trabajo) {
         Trabajo existingTrabajo = trabajoService.findById(id);
         if (existingTrabajo == null) {
-            return ResponseEntity.notFound().build();
+            Map<String, Object> responseBody = new HashMap<>();
+            responseBody.put("status", HttpStatus.NOT_FOUND.value());
+            responseBody.put("message", "Trabajo no encontrado");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
         }
         trabajo.setCodTrabajo(id);
         Trabajo updatedTrabajo = trabajoService.save(trabajo);
-        return ResponseEntity.ok(updatedTrabajo);
+        Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put("status", HttpStatus.OK.value());
+        responseBody.put("message", "Trabajo actualizado exitosamente");
+        responseBody.put("result", updatedTrabajo);
+        return ResponseEntity.ok(responseBody);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable String id) {
+    public ResponseEntity<Object> delete(@PathVariable String id) {
         Trabajo trabajo = trabajoService.findById(id);
         if (trabajo == null) {
-            return ResponseEntity.notFound().build();
+            Map<String, Object> responseBody = new HashMap<>();
+            responseBody.put("status", HttpStatus.NOT_FOUND.value());
+            responseBody.put("message", "Trabajo no encontrado");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
         }
         trabajoService.deleteById(id);
-        return ResponseEntity.ok().build();
+        Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put("status", HttpStatus.OK.value());
+        responseBody.put("message", "Trabajo eliminado exitosamente");
+        return ResponseEntity.ok(responseBody);
     }
     
     @GetMapping("/pendientes/trabajador")
-    public ResponseEntity<List<Trabajo>> getTrabajosPendientes(@RequestParam String idTrabajador, @RequestParam String contraseña) {
+    public ResponseEntity<Object> getTrabajosPendientes(@RequestParam String idTrabajador, @RequestParam String contraseña) {
         List<Trabajo> trabajosPendientes = trabajoService.findPendientesTrabajador(idTrabajador, contraseña);
         if (trabajosPendientes.isEmpty()) {
-            return ResponseEntity.notFound().build();
+            Map<String, Object> responseBody = new HashMap<>();
+            responseBody.put("status", HttpStatus.NOT_FOUND.value());
+            responseBody.put("message", "No se encontraron trabajos pendientes");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
         }
-        return ResponseEntity.ok(trabajosPendientes);
+        Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put("status", HttpStatus.OK.value());
+        responseBody.put("message", "Success");
+        responseBody.put("result", trabajosPendientes);
+        return ResponseEntity.ok(responseBody);
     }
     
     @GetMapping("/finalizados/trabajador")
-    public ResponseEntity<List<Trabajo>> getTrabajosFinalizados(@RequestParam String idTrabajador, @RequestParam String contraseña) {
+    public ResponseEntity<Object> getTrabajosFinalizados(@RequestParam String idTrabajador, @RequestParam String contraseña) {
         List<Trabajo> trabajosFinalizados = trabajoService.findFinalizadosTrabajador(idTrabajador, contraseña);
         if (trabajosFinalizados.isEmpty()) {
-            return ResponseEntity.notFound().build();
+            Map<String, Object> responseBody = new HashMap<>();
+            responseBody.put("status", HttpStatus.NOT_FOUND.value());
+            responseBody.put("message", "No se encontraron trabajos finalizados");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
         }
-        return ResponseEntity.ok(trabajosFinalizados);
+        Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put("status", HttpStatus.OK.value());
+        responseBody.put("message", "Success");
+        responseBody.put("result", trabajosFinalizados);
+        return ResponseEntity.ok(responseBody);
     }
     
     @PutMapping("/{id}/finalizar")
-    public ResponseEntity<Trabajo> finalizarTrabajo(@PathVariable String id) {
-    	Trabajo trabajoFinalizado = trabajoService.finalizarTrabajo(id);
+    public ResponseEntity<Object> finalizarTrabajo(@PathVariable String id) {
+        Trabajo trabajoFinalizado = trabajoService.finalizarTrabajo(id);
         if (trabajoFinalizado == null) {
-            return ResponseEntity.notFound().build();
+            Map<String, Object> responseBody = new HashMap<>();
+            responseBody.put("status", HttpStatus.NOT_FOUND.value());
+            responseBody.put("message", "Trabajo no encontrado");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
         }
-        return ResponseEntity.ok(trabajoFinalizado);
+        Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put("status", HttpStatus.OK.value());
+        responseBody.put("message", "Trabajo finalizado exitosamente");
+        responseBody.put("result", trabajoFinalizado);
+        return ResponseEntity.ok(responseBody);
     }
     
     @PutMapping("/{idTrabajo}/asignar/{idTrabajador}")
-    public ResponseEntity<?> asignarTrabajo(@PathVariable String idTrabajo, @PathVariable String idTrabajador) {
-    	int resultado = trabajoService.asignarTrabajo(idTrabajo, idTrabajador);
+    public ResponseEntity<Object> asignarTrabajo(@PathVariable String idTrabajo, @PathVariable String idTrabajador) {
+        int resultado = trabajoService.asignarTrabajo(idTrabajo, idTrabajador);
         
-    	if (resultado == -1) {
-            return ResponseEntity.notFound().build();
+        if (resultado == -1) {
+            Map<String, Object> responseBody = new HashMap<>();
+            responseBody.put("status", HttpStatus.NOT_FOUND.value());
+            responseBody.put("message", "Trabajo o trabajador no encontrado");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
         }
 
         if (resultado == -2) {
-            return ResponseEntity.badRequest().body("La categoría del trabajo y la especialidad del trabajador no coinciden");
+            Map<String, Object> responseBody = new HashMap<>();
+            responseBody.put("status", HttpStatus.BAD_REQUEST.value());
+            responseBody.put("message", "La categoría del trabajo y la especialidad del trabajador no coinciden");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
         }
-    	
-        return ResponseEntity.ok().build();
+        
+        Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put("status", HttpStatus.OK.value());
+        responseBody.put("message", "Trabajo asignado exitosamente");
+        return ResponseEntity.ok(responseBody);
     }
 }

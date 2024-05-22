@@ -88,7 +88,7 @@ public class Trabajo {
     public void setFechaFin(Date fechaFin) {
         this.fechaFin = fechaFin;
     }
-
+    
     public BigDecimal getTiempo() {
         return tiempo;
     }
