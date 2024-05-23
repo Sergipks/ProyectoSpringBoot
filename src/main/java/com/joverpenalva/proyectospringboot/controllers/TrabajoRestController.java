@@ -9,9 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -34,6 +36,13 @@ public class TrabajoRestController {
     private ITrabajoService trabajoService;
     private ITrabajadorService trabajadorService;
     
+    @InitBinder
+    private void dateBinder(WebDataBinder binder) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        CustomDateEditor editor = new CustomDateEditor(dateFormat, true);
+        binder.registerCustomEditor(Date.class, editor);
+    }
+    
     @GetMapping
     public ResponseEntity<Object> getTrabajos() {
         List<Trabajo> trabajos = trabajoService.findAll();
@@ -46,6 +55,7 @@ public class TrabajoRestController {
     
     @PostMapping
     public ResponseEntity<Object> create(@RequestBody Trabajo trabajo) {
+    	trabajo.setFechaInicio(new Date());
         Trabajo createdTrabajo = trabajoService.save(trabajo);
         Map<String, Object> responseBody = new HashMap<>();
         responseBody.put("status", HttpStatus.CREATED.value());
