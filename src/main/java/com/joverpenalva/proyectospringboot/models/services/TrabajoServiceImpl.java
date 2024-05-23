@@ -87,4 +87,10 @@ public class TrabajoServiceImpl implements ITrabajoService {
         
         return 1;
     }
+    
+    @Override
+    @Transactional
+    public List<Trabajo> findTareasSinAsignar() {
+        return trabajoDao.findTareasSinAsignar();
+    }
 }
