@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.joverpenalva.proyectospringboot.models.entities.Trabajador;
 import com.joverpenalva.proyectospringboot.models.entities.Trabajo;
+import com.joverpenalva.proyectospringboot.models.services.ITrabajadorService;
 import com.joverpenalva.proyectospringboot.models.services.ITrabajoService;
 
 @CrossOrigin(origins = {"*"})
@@ -28,6 +30,7 @@ public class TrabajoRestController {
     
     @Autowired
     private ITrabajoService trabajoService;
+    private ITrabajadorService trabajadorService;
     
     @GetMapping
     public ResponseEntity<Object> getTrabajos() {
@@ -154,4 +157,35 @@ public class TrabajoRestController {
         responseBody.put("message", "Trabajo asignado exitosamente");
         return ResponseEntity.ok(responseBody);
     }
+    
+    @PostMapping("/trabajador/{idTrabajador}/crear-trabajo")
+    public ResponseEntity<Object> crearTrabajoConTrabajador(@RequestBody Trabajo trabajo, @PathVariable String idTrabajador) {
+        Trabajador trabajador = trabajadorService.findById(idTrabajador);
+        if (trabajador == null) {
+            Map<String, Object> responseBody = new HashMap<>();
+            responseBody.put("status", HttpStatus.NOT_FOUND.value());
+            responseBody.put("message", "Trabajador no encontrado");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
+        }
+
+        trabajo.setTrabajador(trabajador);
+
+        Trabajo createdTrabajo = trabajoService.save(trabajo);
+
+        Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put("status", HttpStatus.CREATED.value());
+        responseBody.put("message", "Trabajo creado exitosamente con trabajador asignado");
+        responseBody.put("result", createdTrabajo);
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseBody);
+    }
+    
+    @GetMapping("/sin-asignar")
+    public ResponseEntity<Object> getTareasSinAsignar() {
+        List<Trabajo> tareasSinAsignar = trabajoService.findTareasSinAsignar();
+        if (tareasSinAsignar.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontraron tareas sin asignar.");
+        }
+        return ResponseEntity.ok(tareasSinAsignar);
+    }
+
 }

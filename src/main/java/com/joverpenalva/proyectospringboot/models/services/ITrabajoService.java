@@ -14,4 +14,8 @@ public interface ITrabajoService {
 	public List<Trabajo> findFinalizadosTrabajador(String idTrabajador, String contraseña);
 	public Trabajo finalizarTrabajo(String id);
 	public int asignarTrabajo(String idTrabajo, String idTrabajador);
+	
+	
+    public List<Trabajo> findTareasSinAsignar();
+
 }
