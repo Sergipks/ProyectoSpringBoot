@@ -1,10 +1,12 @@
 package com.joverpenalva.proyectospringboot.controllers;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -182,10 +184,73 @@ public class TrabajoRestController {
     @GetMapping("/sin-asignar")
     public ResponseEntity<Object> getTareasSinAsignar() {
         List<Trabajo> tareasSinAsignar = trabajoService.findTareasSinAsignar();
+        Map<String, Object> responseBody = new HashMap<>();
+        
         if (tareasSinAsignar.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontraron tareas sin asignar.");
+            responseBody.put("status", HttpStatus.NOT_FOUND.value());
+            responseBody.put("message", "No se encontraron tareas sin asignar");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
         }
-        return ResponseEntity.ok(tareasSinAsignar);
+        
+        responseBody.put("status", HttpStatus.OK.value());
+        responseBody.put("message", "Lista de tareas sin asignar mostrada exitosamente");
+        responseBody.put("result", tareasSinAsignar);
+        return ResponseEntity.ok(responseBody);
     }
+    
+    @GetMapping("/sin-finalizar")
+    public ResponseEntity<Object> getTareasSinFinalizar() {
+        List<Trabajo> tareasSinFinalizar = trabajoService.findTareasSinFinalizar();
+        Map<String, Object> responseBody = new HashMap<>();
 
+        if (tareasSinFinalizar.isEmpty()) {
+            responseBody.put("status", HttpStatus.NOT_FOUND.value());
+            responseBody.put("message", "No se encontraron tareas sin finalizar");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
+        }
+
+        responseBody.put("status", HttpStatus.OK.value());
+        responseBody.put("message", "Lista de tareas sin finalizar mostrada exitosamente");
+        responseBody.put("result", tareasSinFinalizar);
+        return ResponseEntity.ok(responseBody);
+    }
+    
+    @GetMapping("/finalizadas")
+    public ResponseEntity<Object> getTareasRealizadas() {
+        List<Trabajo> tareasRealizadas = trabajoService.findTareasRealizadas();
+        Map<String, Object> responseBody = new HashMap<>();
+
+        if (tareasRealizadas.isEmpty()) {
+            responseBody.put("status", HttpStatus.NOT_FOUND.value());
+            responseBody.put("message", "No se encontraron tareas realizadas");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
+        }
+
+        responseBody.put("status", HttpStatus.OK.value());
+        responseBody.put("message", "Lista de tareas finalizadas mostrada exitosamente");
+        responseBody.put("result", tareasRealizadas);
+        return ResponseEntity.ok(responseBody);
+    }
+    
+    @GetMapping("/trabajador/{idTrabajador}/finalizadas")
+    public ResponseEntity<Object> getTareasByTrabajadorAndFecha(
+            @PathVariable String idTrabajador,
+            @RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
+            @RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate) {
+        
+        List<Trabajo> tareas = trabajoService.findTareasByTrabajadorAndFecha(idTrabajador, startDate, endDate);
+        Map<String, Object> responseBody = new HashMap<>();
+
+        if (tareas.isEmpty()) {
+            responseBody.put("status", HttpStatus.NOT_FOUND.value());
+            responseBody.put("message", "No se encontraron tareas finalizadas para el trabajador en el rango de fechas especificado");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
+        }
+
+        responseBody.put("status", HttpStatus.OK.value());
+        responseBody.put("message", "Success");
+        responseBody.put("result", tareas);
+        return ResponseEntity.ok(responseBody);
+    }
+    
 }

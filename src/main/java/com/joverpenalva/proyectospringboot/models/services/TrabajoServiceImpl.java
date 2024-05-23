@@ -93,4 +93,22 @@ public class TrabajoServiceImpl implements ITrabajoService {
     public List<Trabajo> findTareasSinAsignar() {
         return trabajoDao.findTareasSinAsignar();
     }
+    
+    @Override
+    @Transactional
+    public List<Trabajo> findTareasSinFinalizar() {
+        return trabajoDao.findByFechaFinIsNull();
+    }
+    
+    @Override
+    @Transactional
+    public List<Trabajo> findTareasRealizadas() {
+        return trabajoDao.findTareasRealizadas();
+    }
+    
+    @Override
+    @Transactional
+    public List<Trabajo> findTareasByTrabajadorAndFecha(String idTrabajador, Date startDate, Date endDate) {
+        return trabajoDao.findTareasByTrabajadorAndFecha(idTrabajador, startDate, endDate);
+    }
 }

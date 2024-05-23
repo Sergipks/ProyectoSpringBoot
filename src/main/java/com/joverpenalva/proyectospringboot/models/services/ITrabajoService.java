@@ -1,5 +1,6 @@
 package com.joverpenalva.proyectospringboot.models.services;
 
+import java.util.Date;
 import java.util.List;
 
 import com.joverpenalva.proyectospringboot.models.entities.Trabajo;
@@ -17,5 +18,9 @@ public interface ITrabajoService {
 	
 	
     public List<Trabajo> findTareasSinAsignar();
+    public List<Trabajo> findTareasSinFinalizar();
+    public List<Trabajo> findTareasRealizadas();
+    public List<Trabajo> findTareasByTrabajadorAndFecha(String idTrabajador, Date startDate, Date endDate);
+
 
 }
