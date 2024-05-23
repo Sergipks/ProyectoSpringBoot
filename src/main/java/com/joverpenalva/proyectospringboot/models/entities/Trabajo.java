@@ -2,6 +2,10 @@ package com.joverpenalva.proyectospringboot.models.entities;
 
 import java.math.BigDecimal;
 import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -14,6 +18,7 @@ import jakarta.persistence.TemporalType;
 
 @Entity
 @Table(name = "trabajos")
+@JsonIgnoreProperties({"trabajador"})
 public class Trabajo {
 
     @Id
@@ -44,6 +49,7 @@ public class Trabajo {
     private Integer prioridad;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonManagedReference
     @JoinColumn(name = "id_trabajador", referencedColumnName = "id_trabajador", insertable = false, updatable = false)
     private Trabajador trabajador;
 
