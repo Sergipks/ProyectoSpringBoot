@@ -76,6 +76,8 @@ public class TrabajoRestController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
         }
         trabajo.setCodTrabajo(id);
+        trabajo.setFechaInicio(existingTrabajo.getFechaInicio());
+        trabajo.setFechaFin(existingTrabajo.getFechaFin());
         Trabajo updatedTrabajo = trabajoService.save(trabajo);
         Map<String, Object> responseBody = new HashMap<>();
         responseBody.put("status", HttpStatus.OK.value());
