@@ -38,5 +38,9 @@ public class TrabajadorServiceImpl implements ITrabajadorService {
     public Trabajador findById(String id) {
         return trabajadorDao.findById(id).orElse(null);
     }
-
+    
+    @Override
+    public List<Trabajador> findByEspecialidad(String especialidad) {
+        return trabajadorDao.findByEspecialidad(especialidad);
+    }
 }

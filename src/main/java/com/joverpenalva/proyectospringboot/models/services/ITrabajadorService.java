@@ -9,4 +9,5 @@ public interface ITrabajadorService {
 	public Trabajador save(Trabajador trabajo);
 	public void deleteById(String id);
 	public Trabajador findById(String id);
+    List<Trabajador> findByEspecialidad(String especialidad);
 }
