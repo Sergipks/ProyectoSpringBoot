@@ -76,6 +76,8 @@ public class TrabajoRestController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
         }
         trabajo.setCodTrabajo(id);
+        trabajo.setFechaInicio(existingTrabajo.getFechaInicio());
+        trabajo.setFechaFin(existingTrabajo.getFechaFin());
         Trabajo updatedTrabajo = trabajoService.save(trabajo);
         Map<String, Object> responseBody = new HashMap<>();
         responseBody.put("status", HttpStatus.OK.value());
@@ -207,6 +209,23 @@ public class TrabajoRestController {
         responseBody.put("status", HttpStatus.OK.value());
         responseBody.put("message", "Lista de tareas sin asignar mostrada exitosamente");
         responseBody.put("result", tareasSinAsignar);
+        return ResponseEntity.ok(responseBody);
+    }
+    
+    @GetMapping("/asignadas")
+    public ResponseEntity<Object> getTareasAsignadas() {
+        List<Trabajo> tareasAsignadas = trabajoService.findTareasAsignadas();
+        Map<String, Object> responseBody = new HashMap<>();
+        
+        if (tareasAsignadas.isEmpty()) {
+            responseBody.put("status", HttpStatus.NOT_FOUND.value());
+            responseBody.put("message", "No se encontraron tareas asignadas");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
+        }
+        
+        responseBody.put("status", HttpStatus.OK.value());
+        responseBody.put("message", "Lista de tareas asignadas mostrada exitosamente");
+        responseBody.put("result", tareasAsignadas);
         return ResponseEntity.ok(responseBody);
     }
     

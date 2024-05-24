@@ -18,6 +18,7 @@ public interface ITrabajoService {
 	
 	
     public List<Trabajo> findTareasSinAsignar();
+    public List<Trabajo> findTareasAsignadas();
     public List<Trabajo> findTareasSinFinalizar();
     public List<Trabajo> findTareasRealizadas();
     public List<Trabajo> findTareasByTrabajadorAndFecha(String idTrabajador, Date startDate, Date endDate);
