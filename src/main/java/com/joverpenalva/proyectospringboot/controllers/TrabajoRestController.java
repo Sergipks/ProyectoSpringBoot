@@ -279,7 +279,7 @@ public class TrabajoRestController {
         }
 
         responseBody.put("status", HttpStatus.OK.value());
-        responseBody.put("message", "Success");
+        responseBody.put("message", "Lista de tareas finalizadas mostrada exitosamente");
         responseBody.put("result", tareas);
         return ResponseEntity.ok(responseBody);
     }
