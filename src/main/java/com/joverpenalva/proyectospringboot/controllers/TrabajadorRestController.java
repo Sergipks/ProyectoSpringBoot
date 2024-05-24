@@ -41,6 +41,23 @@ public class TrabajadorRestController {
 	    return ResponseEntity.ok(responseBody);
 	}
 	
+	@GetMapping("/especialidad/{especialidad}")
+    public ResponseEntity<Object> getTrabajadoresByEspecialidad(@PathVariable String especialidad) {
+        List<Trabajador> trabajadores = trabajadorService.findByEspecialidad(especialidad);
+        if (trabajadores.isEmpty()) {
+        	Map<String, Object> responseBody = new HashMap<>();
+            responseBody.put("status", HttpStatus.NOT_FOUND.value());
+            responseBody.put("message", "No se han encontrado trabajadores");
+            responseBody.put("result", trabajadores);
+            return ResponseEntity.ok(responseBody);
+        }
+        Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put("status", HttpStatus.OK.value());
+        responseBody.put("message", "Success");
+        responseBody.put("result", trabajadores);
+        return ResponseEntity.ok(responseBody);
+    }
+	
 	@PostMapping
     public ResponseEntity<Object> createTrabajador(@RequestBody Trabajador trabajador) {
         Trabajador createdTrabajador = trabajadorService.save(trabajador);
