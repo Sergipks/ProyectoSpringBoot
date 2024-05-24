@@ -96,6 +96,12 @@ public class TrabajoServiceImpl implements ITrabajoService {
     
     @Override
     @Transactional
+    public List<Trabajo> findTareasAsignadas() {
+        return trabajoDao.findTareasAsignadas();
+    }
+    
+    @Override
+    @Transactional
     public List<Trabajo> findTareasSinFinalizar() {
         return trabajoDao.findByFechaFinIsNull();
     }

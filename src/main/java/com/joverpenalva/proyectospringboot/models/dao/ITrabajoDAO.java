@@ -20,6 +20,9 @@ public interface ITrabajoDAO extends CrudRepository<Trabajo, String> {
 	@Query("SELECT t FROM Trabajo t LEFT JOIN FETCH t.trabajador WHERE t.trabajador IS NULL")
 	List<Trabajo> findTareasSinAsignar();
 	
+	@Query("SELECT t FROM Trabajo t LEFT JOIN FETCH t.trabajador WHERE t.trabajador IS NOT NULL")
+	List<Trabajo> findTareasAsignadas();
+	
 	@Query("SELECT t FROM Trabajo t WHERE t.fechaFin IS NULL")
 	List<Trabajo> findByFechaFinIsNull();
 	
