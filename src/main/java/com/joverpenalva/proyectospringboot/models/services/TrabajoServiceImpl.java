@@ -117,4 +117,5 @@ public class TrabajoServiceImpl implements ITrabajoService {
     public List<Trabajo> findTareasByTrabajadorAndFecha(String idTrabajador, Date startDate, Date endDate) {
         return trabajoDao.findTareasByTrabajadorAndFecha(idTrabajador, startDate, endDate);
     }
+    
 }

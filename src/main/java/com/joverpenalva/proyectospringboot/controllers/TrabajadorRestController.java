@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.joverpenalva.proyectospringboot.models.entities.Trabajador;
+import com.joverpenalva.proyectospringboot.models.entities.Trabajo;
 import com.joverpenalva.proyectospringboot.models.services.ITrabajadorService;
+import com.joverpenalva.proyectospringboot.models.services.ITrabajoService;
 
 @CrossOrigin(origins = {"*"})
 @RestController
@@ -27,6 +29,7 @@ public class TrabajadorRestController {
 	
 	@Autowired
 	private ITrabajadorService trabajadorService;
+
 	
 	@GetMapping
 	public ResponseEntity<Object> getTrabajadores() {

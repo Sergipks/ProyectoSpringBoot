@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Editar Trabajador</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-4">Editar Trabajador</h1>
+        <form th:action="@{/view/trabajadores/edit/{id}(id=${trabajador.idTrabajador})}" th:object="${trabajador}" method="post">
+            <div class="form-group">
+                <label for="dni">DNI:</label>
+                <input type="text" id="dni" class="form-control" th:field="*{dni}" readonly/>
+            </div>
+            <div class="form-group">
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" class="form-control" th:field="*{nombre}" required/>
+            </div>
+            <div class="form-group">
+                <label for="apellidos">Apellidos:</label>
+                <input type="text" id="apellidos" class="form-control" th:field="*{apellidos}" required/>
+            </div>
+            <div class="form-group">
+                <label for="especialidad">Especialidad:</label>
+                <input type="text" id="especialidad" class="form-control" th:field="*{especialidad}" required/>
+            </div>
+            <div class="form-group">
+                <label for="contraseña">Contraseña:</label>
+                <input type="password" id="contraseña" class="form-control" th:field="*{contraseña}" required/>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" class="form-control" th:field="*{email}" required/>
+            </div>
+            <button type="submit" class="btn btn-primary">Actualizar</button>
+        </form>
+        <a href="/view/trabajadores" class="btn btn-secondary mt-3">Volver a la lista</a>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Lista de Trabajadores</title>
+    <meta charset="UTF-8">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="text-center">Lista de Trabajadores</h1>
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th>DNI</th>
+                    <th>Nombre</th>
+                    <th>Apellidos</th>
+                    <th>Especialidad</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="trabajador : ${trabajadores}">
+                    <td th:text="${trabajador.dni}">12345678X</td>
+                    <td th:text="${trabajador.nombre}">Nombre del trabajador</td>
+                    <td th:text="${trabajador.apellidos}">Apellidos del trabajador</td>
+                    <td th:text="${trabajador.especialidad}">Especialidad del trabajador</td>
+                    <td>
+                        <a class="btn btn-primary" th:href="@{/view/trabajadores/edit/{id}(id=${trabajador.idTrabajador})}">Editar</a>
+                        <a class="btn btn-danger" th:href="@{/view/trabajadores/delete/{id}(id=${trabajador.idTrabajador})}">Eliminar</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <a class="btn btn-success" href="/view/trabajadores/create">Crear Nuevo Trabajador</a>
+    </div>
+</body>
+</html>

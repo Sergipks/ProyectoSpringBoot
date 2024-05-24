@@ -22,6 +22,4 @@ public interface ITrabajoService {
     public List<Trabajo> findTareasSinFinalizar();
     public List<Trabajo> findTareasRealizadas();
     public List<Trabajo> findTareasByTrabajadorAndFecha(String idTrabajador, Date startDate, Date endDate);
-
-
 }
