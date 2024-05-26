@@ -658,36 +658,4 @@ GET /api/trabajos/trabajador/T001/finalizadas?startDate=2024-01-01&endDate=2024-
   "message": "No se encontraron tareas finalizadas para el trabajador en el rango de fechas especificado",
   "status": 404
 }
-``
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+```
