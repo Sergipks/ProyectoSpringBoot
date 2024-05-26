@@ -6,15 +6,15 @@ Este proyecto contiene un controlador REST para manejar las operaciones CRUD (Cr
 
 ## Contenidos
 
-- [Anotaciones Utilizadas](#anotaciones-utilizadas)
-- [Dependencias](#dependencias)
-- [Métodos del Controlador](#métodos-del-controlador)
-  - [Obtener todos los trabajadores](#obtener-todos-los-trabajadores)
-  - [Obtener trabajadores por especialidad](#obtener-trabajadores-por-especialidad)
-  - [Crear un nuevo trabajador](#crear-un-nuevo-trabajador)
-  - [Actualizar un trabajador existente](#actualizar-un-trabajador-existente)
-  - [Eliminar un trabajador](#eliminar-un-trabajador)
-- [Ejemplo de Uso](#ejemplo-de-uso)
+- Anotaciones Utilizadas
+- Dependencias
+- Métodos del Controlador
+  - Obtener todos los trabajadores
+  - Obtener trabajadores por especialidad
+  - Crear un nuevo trabajador
+  - Actualizar un trabajador existente
+  - Eliminar un trabajador
+- Ejemplo de Uso
 
 ## Anotaciones Utilizadas
 
@@ -134,9 +134,10 @@ GET /api/trabajadores/especialidad/Electricista
 }
 ```
 ***Solcitud***:
-```json
+```sh
 POST /api/trabajadores
-
+```
+```json
 {
     "dni": "12345678X",
     "nombre": "Juan",
@@ -163,9 +164,10 @@ POST /api/trabajadores
 }
 ```
 **Solicitud**:
-```json
+```sh
 PUT /api/trabajadores/1
-
+```
+```json
 {
     "dni": "12345678X",
     "nombre": "Juan",
@@ -202,6 +204,485 @@ DELETE /api/trabajadores/1
     "message": "Trabajador eliminado exitosamente"
 }
 ```
+
+
+# API Trabajos
+
+Este proyecto contiene un controlador REST para manejar las operaciones CRUD (Crear, Leer, Actualizar, Eliminar) de la entidad `Trabajo` en una aplicación Spring Boot. Este controlador expone varias rutas API para interactuar con los recursos de `Trabajo`, proporcionando respuestas en formato JSON.
+
+## Contenidos
+
+- Anotaciones Utilizadas
+- Dependencias
+- Métodos del Controlador
+  - Obtener todos los trabajos
+  - Obtener trabajadores por especialidad
+  - Crear un nuevo trabajador
+  - Actualizar un trabajador existente
+  - Eliminar un trabajador
+- Ejemplo de Uso
+
+### Anotaciones Utilizadas
+
+- `@CrossOrigin(origins = {"*"})`: Permite peticiones desde cualquier origen, habilitando CORS (Cross-Origin Resource Sharing).
+- `@RestController`: Indica que la clase es un controlador REST.
+- `@RequestMapping(value = "api/trabajos", produces = "application/json;charset=UTF-8")`: Define la ruta base de las peticiones y especifica que las respuestas serán en formato JSON con codificación UTF-8.
+
+### Dependencias
+
+- `ITrabajoService`: Servicio que maneja la lógica de negocio relacionada con `Trabajo`.
+- `ITrabajadorService`: Servicio que maneja la lógica de negocio relacionada con `Trabajador`.
+
+### Métodos del Controlador
+
+#### Obtener todos los trabajos
+
+- **Ruta**: `GET /api/trabajos`
+- **Descripción**: Devuelve una lista de todos los trabajos.
+- **Respuesta**:
+  - **Éxito**: Estado HTTP 200 con una lista de trabajos.
+  - **Fallo**: Estado HTTP 404 si no se encuentran trabajos.
+
+#### Crear un nuevo trabajo
+
+- **Ruta**: `POST /api/trabajos`
+- **Descripción**: Crea un nuevo trabajo.
+- **Parámetros**:
+  - `@RequestBody Trabajo trabajo`: Objeto `Trabajo` que se va a crear.
+- **Respuesta**:
+  - **Éxito**: Estado HTTP 201 con el trabajo creado.
+  - **Fallo**: Manejo de errores no especificado explícitamente en el código, pero se podría agregar.
+
+#### Actualizar un trabajo existente
+
+- **Ruta**: `PUT /api/trabajos/{id}`
+- **Descripción**: Actualiza un trabajo existente con la información proporcionada.
+- **Parámetros**:
+  - `@PathVariable String id`: ID del trabajo que se va a actualizar.
+  - `@RequestBody Trabajo trabajo`: Objeto `Trabajo` con la información actualizada.
+- **Respuesta**:
+  - **Éxito**: Estado HTTP 200 con el trabajo actualizado.
+  - **Fallo**: Estado HTTP 404 si no se encuentra el trabajo con el ID especificado.
+
+#### Eliminar un trabajo
+
+- **Ruta**: `DELETE /api/trabajos/{id}`
+- **Descripción**: Elimina un trabajo existente.
+- **Parámetros**:
+  - `@PathVariable String id`: ID del trabajo que se va a eliminar.
+- **Respuesta**:
+  - **Éxito**: Estado HTTP 200 con un mensaje de confirmación de eliminación.
+  - **Fallo**: Estado HTTP 404 si no se encuentra el trabajo con el ID especificado.
+
+#### Obtener trabajos pendientes de un trabajador
+
+- **Ruta**: `GET /api/trabajos/pendientes/trabajador`
+- **Descripción**: Devuelve una lista de trabajos pendientes para un trabajador específico.
+- **Parámetros**:
+  - `@RequestParam String idTrabajador`: ID del trabajador.
+  - `@RequestParam String contraseña`: Contraseña del trabajador.
+- **Respuesta**:
+  - **Éxito**: Estado HTTP 200 con una lista de trabajos pendientes.
+  - **Fallo**: Estado HTTP 404 si no se encuentran trabajos pendientes para el trabajador.
+
+#### Obtener trabajos finalizados de un trabajador
+
+- **Ruta**: `GET /api/trabajos/finalizados/trabajador`
+- **Descripción**: Devuelve una lista de trabajos finalizados para un trabajador específico.
+- **Parámetros**:
+  - `@RequestParam String idTrabajador`: ID del trabajador.
+  - `@RequestParam String contraseña`: Contraseña del trabajador.
+- **Respuesta**:
+  - **Éxito**: Estado HTTP 200 con una lista de trabajos finalizados.
+  - **Fallo**: Estado HTTP 404 si no se encuentran trabajos finalizados para el trabajador.
+
+#### Finalizar un trabajo
+
+- **Ruta**: `PUT /api/trabajos/{id}/finalizar`
+- **Descripción**: Finaliza un trabajo específico.
+- **Parámetros**:
+  - `@PathVariable String id`: ID del trabajo que se va a finalizar.
+- **Respuesta**:
+  - **Éxito**: Estado HTTP 200 con el trabajo finalizado.
+  - **Fallo**: Estado HTTP 404 si no se encuentra el trabajo con el ID especificado.
+
+#### Asignar un trabajo a un trabajador
+
+- **Ruta**: `PUT /api/trabajos/{idTrabajo}/asignar/{idTrabajador}`
+- **Descripción**: Asigna un trabajo a un trabajador específico.
+- **Parámetros**:
+  - `@PathVariable String idTrabajo`: ID del trabajo que se va a asignar.
+  - `@PathVariable String idTrabajador`: ID del trabajador al que se va a asignar el trabajo.
+- **Respuesta**:
+  - **Éxito**: Estado HTTP 200 con un mensaje de éxito.
+  - **Fallo**: Estado HTTP 404 si no se encuentra el trabajo o el trabajador, o estado HTTP 400 si la categoría del trabajo y la especialidad del trabajador no coinciden.
+
+#### Crear un trabajo con trabajador asignado
+
+- **Ruta**: `POST /api/trabajos/trabajador/{idTrabajador}/crear-trabajo`
+- **Descripción**: Crea un nuevo trabajo con un trabajador asignado.
+- **Parámetros**:
+  - `@RequestBody Trabajo trabajo`: Objeto `Trabajo` que se va a crear.
+  - `@PathVariable String idTrabajador`: ID del trabajador que se va a asignar al trabajo.
+- **Respuesta**:
+  - **Éxito**: Estado HTTP 201 con el trabajo creado y el trabajador asignado.
+  - **Fallo**: Estado HTTP 404 si no se encuentra el trabajador.
+
+#### Obtener tareas sin asignar
+
+- **Ruta**: `GET /api/trabajos/sin-asignar`
+- **Descripción**: Devuelve una lista de tareas que aún no han sido asignadas.
+- **Respuesta**:
+  - **Éxito**: Estado HTTP 200 con una lista de tareas sin asignar.
+  - **Fallo**: Estado HTTP 404 si no se encuentran tareas sin asignar.
+
+#### Obtener tareas asignadas
+
+- **Ruta**: `GET /api/trabajos/asignadas`
+- **Descripción**: Devuelve una lista de tareas que han sido asignadas.
+- **Respuesta**:
+  - **Éxito**: Estado HTTP 200 con una lista de tareas asignadas.
+  - **Fallo**: Estado HTTP 404 si no se encuentran tareas asignadas.
+
+#### Obtener tareas sin finalizar
+
+- **Ruta**: `GET /api/trabajos/sin-finalizar`
+- **Descripción**: Devuelve una lista de tareas que aún no han sido finalizadas.
+- **Respuesta**:
+  - **Éxito**: Estado HTTP 200 con una lista de tareas sin finalizar.
+  - **Fallo**: Estado HTTP 404 si no se encuentran tareas sin finalizar.
+
+#### Obtener tareas finalizadas
+
+- **Ruta**: `GET /api/trabajos/finalizadas`
+- **Descripción**: Devuelve una lista de tareas que han sido finalizadas.
+- **Respuesta**:
+  - **Éxito**: Estado HTTP 200 con una lista de tareas finalizadas.
+  - **Fallo**: Estado HTTP 404 si no se encuentran tareas finalizadas.
+
+#### Obtener tareas finalizadas por trabajador en un rango de fechas
+
+- **Ruta**: `GET /api/trabajos/trabajador/{idTrabajador}/finalizadas`
+- **Descripción**: Devuelve una lista de tareas finalizadas por un trabajador en un rango de fechas especificado.
+- **Parámetros**:
+  - `@PathVariable String idTrabajador`: ID del trabajador.
+  - `@RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate`: Fecha de inicio del rango.
+  - `@RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate`: Fecha de fin del rango.
+- **Respuesta**:
+  - **Éxito**: Estado HTTP 200 con una lista de tareas finalizadas en el rango de fechas especificado.
+  - **Fallo**: Estado HTTP 404 si no se encuentran tareas finalizadas para el trabajador en el rango de fechas especificado.
+
+### Ejemplo de Uso
+
+#### Ejemplo: Obtener todos los trabajos
+
+***Solicitud***:
+```sh
+GET /api/trabajos
+```
+***Respuesta***:
+```json
+{"result":[
+  {
+    "codTrabajo":"001",
+    "categoria":"Limpieza",
+    "descripcion":"aaa",
+    "fechaInicio":"2024-05-23",
+    "fechaFin":"2024-05-23",
+    "tiempo":null,
+    "idTrabajador":null,
+    "prioridad":1
+  }
+  {
+    "codTrabajo":"T002",
+    "categoria":"Limpieza",
+    "descripcion":"asdasd",
+    "fechaInicio":"2024-05-23",
+    "fechaFin":"2024-05-24",
+    "tiempo":null,
+    "idTrabajador":"T002",
+    "prioridad":2
+    }],
+"message":"Success",
+"status":200}
+```
+***Solicitud***:
+```sh
+POST /api/trabajos
+```
+```json
+{
+    "codTrabajo":"001",
+    "categoria":"Limpieza",
+    "descripcion":"aaa",
+    "fechaInicio":"2024-05-23",
+    "fechaFin":"2024-05-23",
+    "tiempo":null,
+    "idTrabajador":null,
+    "prioridad":1
+}
+```
+***Resultado***:
+```json
+{
+  "result": {
+    "codTrabajo": "001",
+    "categoria": "Limpieza",
+    "descripcion": "aaa",
+    "fechaInicio": "2024-05-26T18:02:37.102+00:00",
+    "fechaFin": "2024-05-23T00:00:00.000+00:00",
+    "tiempo": null,
+    "idTrabajador": null,
+    "prioridad": 1
+  },
+  "message": "Trabajo creado exitosamente",
+  "status": 201
+}
+```
+***Solicitud***:
+```sh
+PUT /api/trabajos/003
+```
+```json
+{
+    "codTrabajo":"002",
+    "categoria":"Limpieza",
+    "descripcion":"aaa",
+    "fechaInicio":"2024-05-23",
+    "fechaFin":"2024-05-23",
+    "tiempo":null,
+    "idTrabajador":null,
+    "prioridad":1
+}
+```
+***Resultado***:
+```json
+{
+  "result": {
+    "codTrabajo": "003",
+    "categoria": "Limpieza",
+    "descripcion": "aaa",
+    "fechaInicio": "2024-05-26T18:02:37.102+00:00",
+    "fechaFin": "2024-05-23T00:00:00.000+00:00",
+    "tiempo": null,
+    "idTrabajador": null,
+    "prioridad": 1
+  },
+  "message": "Trabajo actualizado exitosamente",
+  "status": 200
+}
+```
+***Solicitud***:
+```sh
+DELETE /api/trabajos/003
+```
+***Respuesta***:
+```json
+{
+  "message": "Trabajo eliminado exitosamente",
+  "status": 200
+}
+```
+***Solicitud***:
+```sh
+GET /api/trabajos/pendientes/trabajador?idTrabajador=T005&contraseña=1234
+```
+***Respuesta***:
+```json
+{
+  "message": "No se encontraron trabajos pendientes",
+  "status": 200
+}
+```
+***Solicitud***:
+```sh
+GET /api/trabajos/finalizados/trabajador?idTrabajador=T005&contraseña=1234
+```
+***Respuesta***:
+```json
+{
+  "message": "No se encontraron trabajos finalizados",
+  "status": 200
+}
+```
+***Solicitud***:
+```sh
+PUT /api/trabajos/002/finalizar
+```
+***Respuesta***:
+```json
+{
+  "result": {
+    "codTrabajo": "002",
+    "categoria": "Limpieza",
+    "descripcion": "aaa",
+    "fechaInicio": "2024-05-26",
+    "fechaFin": "2024-05-26T18:25:17.548+00:00",
+    "tiempo": null,
+    "idTrabajador": null,
+    "prioridad": 1
+  },
+  "message": "Trabajo finalizado exitosamente",
+  "status": 200
+}
+```
+***Solicitud***:
+```sh
+PUT /api/trabajos/001/asignar/T005
+```
+***Respuesta***:
+```json
+{
+  "message": "Trabajo asignado exitosamente",
+  "status": 200
+}
+```
+***Solicitud***:
+```sh
+POST /api/trabajos/trabajador/T005/crear-trabajo
+```
+***Respuesta***:
+```json
+{
+  "message": "Trabajo creado exitosamente con trabajador asignado",
+  "status": 200
+}
+```
+***Solicitud***:
+```sh
+GET /api/trabajos/sin-asignar
+```
+***Respuesta***:
+```json
+{
+  "result": [
+    {
+      "codTrabajo": "002",
+      "categoria": "Limpieza",
+      "descripcion": "aaa",
+      "fechaInicio": "2024-05-26",
+      "fechaFin": "2024-05-26",
+      "tiempo": null,
+      "idTrabajador": null,
+      "prioridad": 1
+    }
+  ],
+  "message": "Lista de tareas sin asignar mostrada exitosamente",
+  "status": 200
+}
+```
+***Solicitud***:
+```sh
+GET /api/trabajos/asignadas
+```
+***Respuesta***:
+```json
+{
+  "result": [
+    {
+      "codTrabajo": "T002",
+      "categoria": "Limpieza",
+      "descripcion": "asdasd",
+      "fechaInicio": "2024-05-23",
+      "fechaFin": "2024-05-24",
+      "tiempo": null,
+      "idTrabajador": "T002",
+      "prioridad": 2
+    },
+    {
+      "codTrabajo": "001",
+      "categoria": "Limpieza",
+      "descripcion": "aaa",
+      "fechaInicio": "2024-05-26",
+      "fechaFin": "2024-05-23",
+      "tiempo": null,
+      "idTrabajador": "T005",
+      "prioridad": 1
+    }
+  ],
+  "message": "Lista de tareas asignadas mostrada exitosamente",
+  "status": 200
+}
+```
+***Solicitud***:
+```sh
+GET /api/trabajos/sin-finalizar
+```
+***Respuesta***:
+```json
+{
+  "message": "No se encontraron tareas sin finalizar",
+  "status": 404
+}
+```
+***Solicitud***:
+```sh
+GET /api/trabajos/finalizadas
+```
+***Respuesta***:
+```json
+{
+  "result": [
+    {
+      "codTrabajo": "T002",
+      "categoria": "Limpieza",
+      "descripcion": "asdasd",
+      "fechaInicio": "2024-05-23",
+      "fechaFin": "2024-05-24",
+      "tiempo": null,
+      "idTrabajador": "T002",
+      "prioridad": 2
+    },
+    {
+      "codTrabajo": "001",
+      "categoria": "Limpieza",
+      "descripcion": "aaa",
+      "fechaInicio": "2024-05-26",
+      "fechaFin": "2024-05-23",
+      "tiempo": null,
+      "idTrabajador": "T005",
+      "prioridad": 1
+    }
+  ],
+  "message": "Lista de tareas finalizadas mostrada exitosamente",
+  "status": 200
+}
+```
+***Solicitud***:
+```sh
+GET /api/trabajos/trabajador/T001/finalizadas?startDate=2024-01-01&endDate=2024-12-31
+```
+***Respuesta***:
+```json
+{
+  "message": "No se encontraron tareas finalizadas para el trabajador en el rango de fechas especificado",
+  "status": 404
+}
+``
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
