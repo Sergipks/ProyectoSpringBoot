@@ -22,4 +22,7 @@ public interface ITrabajoService {
     public List<Trabajo> findTareasSinFinalizar();
     public List<Trabajo> findTareasRealizadas();
     public List<Trabajo> findTareasByTrabajadorAndFecha(String idTrabajador, Date startDate, Date endDate);
+	public List<Trabajo> findTrabajosOrdenadosPorPrioridad(String idTrabajador, String contraseña);
+    public List<Trabajo> findTrabajosPrioridadConcreta(String idTrabajador, String contraseña, int prioridad);
+
 }
