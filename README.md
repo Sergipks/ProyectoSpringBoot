@@ -372,6 +372,35 @@ Este proyecto contiene un controlador REST para manejar las operaciones CRUD (Cr
   - **Éxito**: Estado HTTP 200 con una lista de tareas finalizadas en el rango de fechas especificado.
   - **Fallo**: Estado HTTP 404 si no se encuentran tareas finalizadas para el trabajador en el rango de fechas especificado.
 
+#### Listar tareas por prioridad de un trabajador
+
+- **Ruta**: `GET /api/trabajos/prioridad`
+- **Descripción**: Devuelve una lista de tareas pendientes de un trabajador, ordenadas por prioridad.
+- **Parámetros**:
+  - `idTrabajador` (Requerido, String): ID del trabajador.
+  - `contraseña` (Requerido, String): Contraseña del trabajador.
+- **Respuesta**:
+  - **Éxito**:
+    - Código: 200 OK
+    - Contenido: Lista de tareas pendientes ordenadas por prioridad.
+  - **Error**:
+    - Código: 404 Not Found
+
+#### Listar tareas por prioridad concreta de un trabajador
+
+- **Ruta**: `GET /api/trabajos/prioridad/concreta`
+- **Descripción**: Devuelve una lista de tareas pendientes de un trabajador, solo de la prioridad que se le pase en la petición.
+- **Parámetros**:
+  - `idTrabajador` (Requerido, String): ID del trabajador.
+  - `contraseña` (Requerido, String): Contraseña del trabajador.
+  - `prioridad` (Requerido, int): Prioridad de las tareas a filtrar.
+- **Respuesta**:
+  - **Éxito**:
+    - Código: 200 OK
+    - Contenido: Lista de tareas pendientes de la prioridad especificada.
+  - **Error**:
+    - Código: 404 Not Found
+
 ### Ejemplo de Uso
 
 #### Ejemplo: Obtener todos los trabajos
@@ -659,3 +688,73 @@ GET /api/trabajos/trabajador/T001/finalizadas?startDate=2024-01-01&endDate=2024-
   "status": 404
 }
 ```
+
+***Solicitud***:
+```sh
+GET /api/trabajos/prioridad?idTrabajador=11111&contraseña=1234
+```
+***Respuesta***:
+```json
+{
+  "result": [
+    {
+      "codTrabajo": "22222",
+      "categoria": "Limpieza",
+      "descripcion": "prioridades2",
+      "fechaInicio": "2024-05-30",
+      "fechaFin": null,
+      "tiempo": null,
+      "idTrabajador": "11111",
+      "prioridad": 1
+    },
+    {
+      "codTrabajo": "11111",
+      "categoria": "Limpieza",
+      "descripcion": "prioridades",
+      "fechaInicio": "2024-05-30",
+      "fechaFin": null,
+      "tiempo": null,
+      "idTrabajador": "11111",
+      "prioridad": 2
+    },
+    {
+      "codTrabajo": "33333",
+      "categoria": "Limpieza",
+      "descripcion": "prioridad3",
+      "fechaInicio": "2024-05-30",
+      "fechaFin": null,
+      "tiempo": null,
+      "idTrabajador": "11111",
+      "prioridad": 3
+    }
+  ],
+  "message": "Success",
+  "status": 200
+}
+```
+***Solicitud***:
+```sh
+GET /api/trabajos/prioridad/concreta?idTrabajador=11111&contraseña=1234&prioridad=1
+```
+***Respuesta***:
+```json
+{
+  "result": [
+    {
+      "codTrabajo": "22222",
+      "categoria": "Limpieza",
+      "descripcion": "prioridades2",
+      "fechaInicio": "2024-05-30",
+      "fechaFin": null,
+      "tiempo": null,
+      "idTrabajador": "11111",
+      "prioridad": 1
+    }
+  ],
+  "message": "Success",
+  "status": 200
+}
+```
+
+
+
