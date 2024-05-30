@@ -32,4 +32,10 @@ public interface ITrabajoDAO extends CrudRepository<Trabajo, String> {
 	@Query("SELECT t FROM Trabajo t WHERE t.trabajador.idTrabajador = :idTrabajador AND t.fechaFin BETWEEN :startDate AND :endDate")
     List<Trabajo> findTareasByTrabajadorAndFecha(@Param("idTrabajador") String idTrabajador, @Param("startDate") Date startDate, @Param("endDate") Date endDate);
 
+	@Query("SELECT t FROM Trabajo t JOIN FETCH t.trabajador tr WHERE tr.idTrabajador = :idTrabajador AND tr.contraseña = :contraseña AND t.fechaFin IS NULL ORDER BY t.prioridad ASC")
+    List<Trabajo> findTrabajosOrdenadosPorPrioridad(String idTrabajador, String contraseña);
+
+	@Query("SELECT t FROM Trabajo t JOIN FETCH t.trabajador tr WHERE tr.idTrabajador = :idTrabajador AND tr.contraseña = :contraseña AND t.fechaFin IS NULL AND t.prioridad = :prioridad ORDER BY t.prioridad ASC")
+    List<Trabajo> findTrabajosPrioridadConcreta(@Param("idTrabajador") String idTrabajador, @Param("contraseña") String contraseña, @Param("prioridad") int prioridad);
+
 }

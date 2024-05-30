@@ -284,4 +284,37 @@ public class TrabajoRestController {
         return ResponseEntity.ok(responseBody);
     }
     
+    @GetMapping("/prioridad")
+    public ResponseEntity<Object> listarTrabajosPorPrioridad(@RequestParam String idTrabajador, @RequestParam String contraseña) {
+        List<Trabajo> trabajosPendientes = trabajoService.findTrabajosOrdenadosPorPrioridad(idTrabajador, contraseña);
+        Map<String, Object> responseBody = new HashMap<>();
+
+        if (trabajosPendientes.isEmpty()) {
+            responseBody.put("status", HttpStatus.NOT_FOUND.value());
+            responseBody.put("message", "No se encontraron trabajos pendientes");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
+        }
+
+        responseBody.put("status", HttpStatus.OK.value());
+        responseBody.put("message", "Success");
+        responseBody.put("result", trabajosPendientes);
+        return ResponseEntity.ok(responseBody);
+    }
+    
+    @GetMapping("/prioridad/concreta")
+    public ResponseEntity<Object> listarTrabajosPrioridadConcreta(@RequestParam String idTrabajador, @RequestParam String contraseña, @RequestParam int prioridad) {
+        List<Trabajo> trabajosPrioridadConcreta = trabajoService.findTrabajosPrioridadConcreta(idTrabajador, contraseña, prioridad);
+        if (trabajosPrioridadConcreta.isEmpty()) {
+            Map<String, Object> responseBody = new HashMap<>();
+            responseBody.put("status", HttpStatus.NOT_FOUND.value());
+            responseBody.put("message", "No se encontraron trabajos de la prioridad especificada");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
+        }
+        Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put("status", HttpStatus.OK.value());
+        responseBody.put("message", "Success");
+        responseBody.put("result", trabajosPrioridadConcreta);
+        return ResponseEntity.ok(responseBody);
+    }
+    
 }

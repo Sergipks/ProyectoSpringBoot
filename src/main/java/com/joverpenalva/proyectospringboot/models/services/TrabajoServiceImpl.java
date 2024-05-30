@@ -118,4 +118,14 @@ public class TrabajoServiceImpl implements ITrabajoService {
         return trabajoDao.findTareasByTrabajadorAndFecha(idTrabajador, startDate, endDate);
     }
     
+    @Override
+    @Transactional
+    public List<Trabajo> findTrabajosOrdenadosPorPrioridad(String idTrabajador, String contraseña) {
+    	return trabajoDao.findTrabajosOrdenadosPorPrioridad(idTrabajador, contraseña);
+    }
+    
+    @Override
+    public List<Trabajo> findTrabajosPrioridadConcreta(String idTrabajador, String contraseña, int prioridad) {
+        return trabajoDao.findTrabajosPrioridadConcreta(idTrabajador, contraseña, prioridad);
+    }
 }
