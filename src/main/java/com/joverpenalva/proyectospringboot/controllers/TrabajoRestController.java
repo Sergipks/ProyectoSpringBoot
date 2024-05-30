@@ -135,13 +135,16 @@ public class TrabajoRestController {
     }
     
     @PutMapping("/{id}/finalizar")
-    public ResponseEntity<Object> finalizarTrabajo(@PathVariable String id) {
+    public ResponseEntity<Object> finalizarTrabajo(@PathVariable String id, @RequestParam BigDecimal tiempo) {
         Trabajo trabajoFinalizado = trabajoService.finalizarTrabajo(id);
         if (trabajoFinalizado == null) {
             Map<String, Object> responseBody = new HashMap<>();
             responseBody.put("status", HttpStatus.NOT_FOUND.value());
             responseBody.put("message", "Trabajo no encontrado");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
+        }
+        if (tiempo != null) {
+        	trabajoFinalizado.setTiempo(tiempo);
         }
         Map<String, Object> responseBody = new HashMap<>();
         responseBody.put("status", HttpStatus.OK.value());
